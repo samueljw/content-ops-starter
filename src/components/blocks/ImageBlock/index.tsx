@@ -4,10 +4,12 @@ import classNames from 'classnames';
 import { mapStylesToClassNames as mapStyles } from '../../../utils/map-styles-to-class-names';
 
 export default function ImageBlock(props) {
-    const { elementId, className, imageClassName, url, altText = '', styles = {} } = props;
+    const { elementId, className, url, altText = '', styles = {}, style } = props;
+
     if (!url) {
         return null;
     }
+
     const fieldPath = props['data-sb-field-path'];
     const annotations = fieldPath
         ? { 'data-sb-field-path': [fieldPath, `${fieldPath}.url#@src`, `${fieldPath}.altText#@alt`, `${fieldPath}.elementId#@id`].join(' ').trim() }
@@ -27,7 +29,8 @@ export default function ImageBlock(props) {
             <img
                 id={elementId}
                 className={classNames(
-                    imageClassName,
+                    'image-default-class', // General class for images
+                    className,
                     styles?.self?.padding ? mapStyles({ padding: styles?.self?.padding }) : undefined,
                     styles?.self?.borderWidth && styles?.self?.borderWidth !== 0 && styles?.self?.borderStyle !== 'none'
                         ? mapStyles({
@@ -40,6 +43,7 @@ export default function ImageBlock(props) {
                 )}
                 src={url}
                 alt={altText}
+                style={style} // Apply inline style specifically when passed
             />
         </div>
     );
